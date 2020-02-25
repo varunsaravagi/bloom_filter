@@ -10,9 +10,13 @@ Program outputs the total number of False Positive and Not Present entries.
 from bloom_filter import BloomFilter
 from random import shuffle
 
+ERROR_PROBABILITY = 0.01
+NUMBER_OF_TEST_ENTRIES_ADDED = 100
+NUMBER_OF_TEST_ENTRIES_NOT_ADDED = 100
+
 
 def test_bloom_filter():
-    bloom_filter = BloomFilter(max_elements=2000)
+    bloom_filter = BloomFilter(max_elements=2000, error_probability=ERROR_PROBABILITY)
     _insert_data(bloom_filter)
     _check_data(bloom_filter)
 
@@ -36,8 +40,8 @@ def _check_data(bloom_filter):
     print(f"Total entries added {len(test_data_added)}")
     print(
         f"""Searching for {len(test_data)} entries:
-        {len(test_data)//2} entries from added set,
-        {len(test_data)//2} entries from not added set""",
+        {NUMBER_OF_TEST_ENTRIES_ADDED} entries from added set,
+        {NUMBER_OF_TEST_ENTRIES_NOT_ADDED} entries from not added set""",
     )
     print(f"False positive: {false_positive}")
     print(f"Not present: {not_present}")
@@ -57,7 +61,7 @@ def _create_test_data():
     shuffle(test_datas_added)
     shuffle(test_datas_not_added)
 
-    return test_datas_added[:100] + test_datas_not_added[:100], set(test_datas_added), set(test_datas_not_added)
+    return test_datas_added[:NUMBER_OF_TEST_ENTRIES_ADDED] + test_datas_not_added[:NUMBER_OF_TEST_ENTRIES_NOT_ADDED], set(test_datas_added), set(test_datas_not_added)
 
 
 if __name__ == '__main__':
